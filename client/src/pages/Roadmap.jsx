@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { learningApi } from '../api/app.api';
-import { Loader2, Map, CheckCircle2, Circle, Clock, PlayCircle, Sparkles, ArrowRight } from 'lucide-react';
+import { learningApi, aiApi } from '../api/app.api';
+import { Loader2, Map, CheckCircle2, Circle, Clock, PlayCircle, Sparkles, ArrowRight, Bot } from 'lucide-react';
 
 const STATUS_CONFIG = {
   not_started: { icon: Circle, color: 'text-surface-400', bg: 'bg-surface-100', label: 'Not Started' },
@@ -31,6 +31,13 @@ export default function Roadmap() {
     },
   });
 
+  const aiGenerateMutation = useMutation({
+    mutationFn: () => aiApi.generateRoadmap(true),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['learningPath']);
+    },
+  });
+
   if (isLoading) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 text-brand-600 animate-spin" /></div>;
 
   const path = data?.data;
@@ -41,13 +48,23 @@ export default function Roadmap() {
         <Map className="w-12 h-12 text-surface-300 mx-auto mb-4" />
         <h2 className="text-xl font-semibold text-surface-900 mb-2">No Learning Path Yet</h2>
         <p className="text-surface-500 mb-6">Set a career goal and add skills to your profile to generate a personalized roadmap.</p>
-        <button
-          onClick={() => generateMutation.mutate()}
-          disabled={generateMutation.isPending}
-          className="btn-primary"
-        >
-          {generateMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> Generate Roadmap</>}
-        </button>
+        <div className="flex gap-3 justify-center">
+          <button
+            onClick={() => aiGenerateMutation.mutate()}
+            disabled={aiGenerateMutation.isPending || generateMutation.isPending}
+            className="btn-primary"
+          >
+            {aiGenerateMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Bot className="w-5 h-5" /> Generate AI Roadmap</>}
+          </button>
+          <button
+            onClick={() => generateMutation.mutate()}
+            disabled={generateMutation.isPending || aiGenerateMutation.isPending}
+            className="btn-secondary"
+          >
+            {generateMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> Quick Generate</>}
+          </button>
+        </div>
+        {aiGenerateMutation.isError && <p className="text-sm text-red-600 mt-3">{aiGenerateMutation.error?.message || 'AI generation failed'}</p>}
         {generateMutation.isError && <p className="text-sm text-red-600 mt-3">{generateMutation.error?.message || 'Failed to generate'}</p>}
       </div>
     );
@@ -139,15 +156,24 @@ export default function Roadmap() {
         ))}
       </div>
 
+      {/* AI source indicator */}
+      {path.items?.length > 0 && (
+        <div className="mt-4 p-3 rounded-lg bg-brand-50 border border-brand-200 text-sm text-brand-700 flex items-center gap-2">
+          <Sparkles className="w-4 h-4" />
+          <span>Roadmap generated using {aiGenerateMutation.isSuccess ? 'AI-powered analysis' : 'deterministic skill-gap prioritization'}</span>
+        </div>
+      )}
+
       {/* Regenerate */}
-      <div className="mt-8 text-center">
-        <button
-          onClick={() => generateMutation.mutate()}
-          disabled={generateMutation.isPending}
-          className="btn-secondary"
-        >
-          <Sparkles className="w-4 h-4" /> Regenerate Roadmap
-        </button>
+      <div className="mt-6 text-center">
+        <div className="flex gap-3 justify-center">
+          <button onClick={() => aiGenerateMutation.mutate()} disabled={aiGenerateMutation.isPending} className="btn-secondary">
+            <Bot className="w-4 h-4" /> AI Regenerate
+          </button>
+          <button onClick={() => generateMutation.mutate()} disabled={generateMutation.isPending} className="btn-secondary">
+            <Sparkles className="w-4 h-4" /> Quick Regenerate
+          </button>
+        </div>
       </div>
     </div>
   );

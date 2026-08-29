@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
-import { jobApi } from '../api/app.api';
-import { Loader2, MapPin, Briefcase, IndianRupee, CheckCircle2, XCircle, ArrowRight, Filter } from 'lucide-react';
+import { jobApi, aiApi } from '../api/app.api';
+import { Loader2, MapPin, Briefcase, IndianRupee, CheckCircle2, XCircle, ArrowRight, Filter, Sparkles } from 'lucide-react';
 
 function JobList() {
   const [filter, setFilter] = useState('');
@@ -177,9 +177,87 @@ function JobDetail() {
         </div>
       )}
 
+      {/* AI Explanation */}
+      <AIJobExplanation jobId={id} />
+
       {job.isDemo && (
         <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-sm text-amber-700">
           ⚠ This is a demo listing for demonstration purposes. It is not a real job vacancy.
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AIJobExplanation({ jobId }) {
+  const [showAI, setShowAI] = useState(false);
+  const [explanation, setExplanation] = useState(null);
+
+  const mutation = useMutation({
+    mutationFn: () => aiApi.explainJob(jobId),
+    onSuccess: (data) => setExplanation(data.data),
+  });
+
+  const handleExplain = () => {
+    setShowAI(true);
+    if (!explanation) mutation.mutate();
+  };
+
+  if (!showAI) {
+    return (
+      <button onClick={handleExplain} className="btn-secondary w-full mb-6 justify-center">
+        <Sparkles className="w-4 h-4" /> Get AI Job Analysis
+      </button>
+    );
+  }
+
+  return (
+    <div className="card p-6 mb-6">
+      <div className="flex items-center gap-2 mb-4">
+        <Sparkles className="w-5 h-5 text-brand-600" />
+        <h2 className="text-lg font-semibold text-surface-900">AI Job Analysis</h2>
+      </div>
+
+      {mutation.isPending && (
+        <div className="flex items-center gap-2 text-surface-500 py-4">
+          <Loader2 className="w-5 h-5 animate-spin" /> Analyzing your match...
+        </div>
+      )}
+
+      {mutation.isError && (
+        <p className="text-sm text-red-600">Failed to load analysis. Please try again.</p>
+      )}
+
+      {explanation && (
+        <div className="space-y-4">
+          {explanation.source && (
+            <p className="text-xs text-surface-400 flex items-center gap-1">
+              <Sparkles className="w-3 h-3" /> {explanation.source}
+              {explanation.isAIGenerated === false && ' — AI unavailable, using deterministic analysis'}
+            </p>
+          )}
+          <p className="text-sm text-surface-700 leading-relaxed">{explanation.explanation}</p>
+          {explanation.strongPoints?.length > 0 && (
+            <div>
+              <p className="text-sm font-medium text-emerald-700 mb-1">Strong Points</p>
+              <ul className="text-sm text-surface-600 space-y-1">
+                {explanation.strongPoints.map((p, i) => <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />{p}</li>)}
+              </ul>
+            </div>
+          )}
+          {explanation.improvementAreas?.length > 0 && (
+            <div>
+              <p className="text-sm font-medium text-amber-700 mb-1">Areas to Improve</p>
+              <ul className="text-sm text-surface-600 space-y-1">
+                {explanation.improvementAreas.map((a, i) => <li key={i} className="flex items-start gap-2"><XCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />{a}</li>)}
+              </ul>
+            </div>
+          )}
+          {explanation.actionableAdvice && (
+            <div className="p-3 rounded-lg bg-brand-50 border border-brand-200">
+              <p className="text-sm text-brand-700 font-medium">💡 {explanation.actionableAdvice}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -16,6 +16,7 @@ import assessmentRoutes from './routes/assessment.routes.js';
 import jobRoutes from './routes/job.routes.js';
 import learningRoutes from './routes/learning.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
+import aiRoutes from './routes/ai.routes.js';
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api', assessmentRoutes);
 app.use('/api', jobRoutes);
 app.use('/api', learningRoutes);
 app.use('/api', dashboardRoutes);
+app.use('/api', aiRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────
 app.use('/api/*', (req, res) => {

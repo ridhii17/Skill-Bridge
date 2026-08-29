@@ -51,3 +51,15 @@ export const learningApi = {
 export const dashboardApi = {
   get: () => api.get('/dashboard'),
 };
+
+// AI
+export const aiApi = {
+  analyzeResume: (formData) => api.post('/ai/resume', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
+  explainJob: (jobId) => api.post('/ai/job-explanation', { jobId }),
+  explainLearning: (resourceId) => api.post('/ai/learning-explanation', { resourceId }),
+  generateRoadmap: (useAI = true) => api.post('/ai/roadmap', { useAI }),
+  askAssistant: (question) => api.post('/ai/assistant', { question }),
+  status: () => api.get('/ai/status'),
+};
