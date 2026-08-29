@@ -15,6 +15,8 @@ import Skills from './pages/Skills';
 import JobsPage from './pages/Jobs';
 import Learning from './pages/Learning';
 import Roadmap from './pages/Roadmap';
+import ResumeAnalyzer from './pages/ResumeAnalyzer';
+import CareerAssistant from './pages/CareerAssistant';
 
 function App() {
   return (
@@ -69,6 +71,14 @@ function App() {
       <Route
         path="/roadmap"
         element={<ProtectedRoute><AppLayout><Roadmap /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/resume"
+        element={<ProtectedRoute><AppLayout><ResumeAnalyzer /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/assistant"
+        element={<ProtectedRoute><AppLayout><CareerAssistant /></AppLayout></ProtectedRoute>}
       />
 
       <Route path="*" element={<NotFound />} />

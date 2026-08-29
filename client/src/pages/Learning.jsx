@@ -3,6 +3,71 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { learningApi, aiApi } from '../api/app.api';
 import { Loader2, BookOpen, ExternalLink, Filter, Star, Clock, AlertTriangle, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 
+function RecommendationCard({ rec }) {
+  const [expanded, setExpanded] = useState(false);
+  const [insight, setInsight] = useState(null);
+
+  const insightMutation = useMutation({
+    mutationFn: (resourceId) => aiApi.explainLearning(resourceId),
+    onSuccess: (data) => setInsight(data.data),
+  });
+
+  const handleExpand = (resourceId) => {
+    setExpanded(!expanded);
+    if (!insight && !expanded) insightMutation.mutate(resourceId);
+  };
+
+  return (
+    <div className="card p-5">
+      <div className="flex items-start gap-3 mb-3">
+        <div className="p-2 rounded-lg bg-amber-50">
+          <AlertTriangle className="w-5 h-5 text-amber-600" />
+        </div>
+        <div>
+          <h3 className="font-semibold text-surface-900">{rec.skill?.name || 'Skill'}</h3>
+          <p className="text-sm text-surface-500">Gap: {rec.gap}% · Priority: {rec.priority}</p>
+        </div>
+      </div>
+      {rec.resources?.length > 0 && (
+        <div className="space-y-2 ml-11">
+          {rec.resources.map((res, j) => (
+            <div key={j}>
+              <div className="flex items-center justify-between p-3 rounded-lg bg-surface-50 border border-surface-100">
+                <div>
+                  <p className="text-sm font-medium text-surface-900">{res.title}</p>
+                  <div className="flex items-center gap-3 text-xs text-surface-500 mt-0.5">
+                    <span className="badge bg-surface-100 text-surface-600">{res.level}</span>
+                    <span>{res.type}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {res.duration}</span>
+                    {res.provider && <span>{res.provider}</span>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {res.url && <a href={res.url} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:text-brand-700"><ExternalLink className="w-4 h-4" /></a>}
+                  <button onClick={() => handleExpand(res._id)} className="text-surface-400 hover:text-brand-600">
+                    <Sparkles className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              {expanded && insight && res._id && (
+                <div className="mt-2 p-3 rounded-lg bg-brand-50 border border-brand-100">
+                  <p className="text-xs text-brand-600 flex items-center gap-1 mb-1"><Sparkles className="w-3 h-3" /> {insight.source || 'AI Insight'}</p>
+                  <p className="text-sm text-surface-700">{insight.reason}</p>
+                  {insight.whatYouWillLearn?.length > 0 && (
+                    <ul className="mt-1 text-xs text-surface-600 list-disc list-inside">
+                      {insight.whatYouWillLearn.map((w, k) => <li key={k}>{w}</li>)}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Learning() {
   const [activeTab, setActiveTab] = useState('recommendations');
   const [levelFilter, setLevelFilter] = useState('');
