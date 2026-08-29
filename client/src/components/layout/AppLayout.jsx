@@ -7,7 +7,7 @@ import {
   ChevronRight, Upload, Bot, FlaskConical, FileText, Shield, TrendingUp,
 } from 'lucide-react';
 
-const navItems = [
+const baseNavItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/profile', label: 'Profile', icon: UserCircle },
   { path: '/career-explorer', label: 'Career Explorer', icon: Target },
@@ -21,6 +21,9 @@ const navItems = [
   { path: '/simulator', label: 'Career Simulator', icon: FlaskConical },
   { path: '/market-insights', label: 'Market Insights', icon: TrendingUp },
   { path: '/assistant', label: 'AI Assistant', icon: Bot },
+];
+
+const adminNavItems = [
   { path: '/admin', label: 'Admin', icon: Shield },
 ];
 
@@ -34,6 +37,9 @@ export default function AppLayout({ children }) {
     await logout();
     navigate('/login');
   };
+
+  const isAdmin = user?.role === 'admin';
+  const navItems = isAdmin ? [...baseNavItems, ...adminNavItems] : baseNavItems;
 
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
