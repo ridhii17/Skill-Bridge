@@ -17,6 +17,10 @@ import jobRoutes from './routes/job.routes.js';
 import learningRoutes from './routes/learning.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
 import aiRoutes from './routes/ai.routes.js';
+import verificationRoutes from './routes/verification.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import simulatorRoutes from './routes/simulator.routes.js';
+import marketRoutes from './routes/market.routes.js';
 
 const app = express();
 
@@ -46,6 +50,10 @@ app.use('/api', jobRoutes);
 app.use('/api', learningRoutes);
 app.use('/api', dashboardRoutes);
 app.use('/api', aiRoutes);
+app.use('/api', verificationRoutes);
+app.use('/api', adminRoutes);
+app.use('/api', simulatorRoutes);
+app.use('/api', marketRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────
 app.use('/api/*', (req, res) => {

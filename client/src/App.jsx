@@ -17,6 +17,11 @@ import Learning from './pages/Learning';
 import Roadmap from './pages/Roadmap';
 import ResumeAnalyzer from './pages/ResumeAnalyzer';
 import CareerAssistant from './pages/CareerAssistant';
+import CareerSimulator from './pages/CareerSimulator';
+import ResumeBuilder from './pages/ResumeBuilder';
+import AdminDashboard from './pages/AdminDashboard';
+import MarketInsights from './pages/MarketInsights';
+import Verification from './pages/Verification';
 
 function App() {
   return (
@@ -26,6 +31,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/verify/:verificationId" element={<Verification />} />
 
       {/* Protected routes with app layout */}
       <Route
@@ -77,8 +83,24 @@ function App() {
         element={<ProtectedRoute><AppLayout><ResumeAnalyzer /></AppLayout></ProtectedRoute>}
       />
       <Route
+        path="/resume-builder"
+        element={<ProtectedRoute><AppLayout><ResumeBuilder /></AppLayout></ProtectedRoute>}
+      />
+      <Route
         path="/assistant"
         element={<ProtectedRoute><AppLayout><CareerAssistant /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/simulator"
+        element={<ProtectedRoute><AppLayout><CareerSimulator /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/admin"
+        element={<ProtectedRoute><AppLayout><AdminDashboard /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/market-insights"
+        element={<ProtectedRoute><AppLayout><MarketInsights /></AppLayout></ProtectedRoute>}
       />
 
       <Route path="*" element={<NotFound />} />

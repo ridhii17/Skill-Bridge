@@ -52,6 +52,32 @@ export const dashboardApi = {
   get: () => api.get('/dashboard'),
 };
 
+// Verification
+export const verificationApi = {
+  myVerifications: () => api.get('/verifications/my'),
+  getPublic: (verificationId) => api.get(`/verify/${verificationId}`),
+};
+
+// Admin
+export const adminApi = {
+  stats: () => api.get('/admin/stats'),
+  users: (params) => api.get('/admin/users', { params }),
+  updateUserRole: (id, role) => api.put(`/admin/users/${id}/role`, { role }),
+  updateUserStatus: (id, isActive) => api.put(`/admin/users/${id}/status`, { isActive }),
+  jobs: () => api.get('/admin/jobs'),
+  skills: () => api.get('/admin/skills'),
+};
+
+// Simulator
+export const simulatorApi = {
+  whatIf: (improvements) => api.post('/simulator/what-if', { skillImprovements: improvements }),
+};
+
+// Market
+export const marketApi = {
+  insights: () => api.get('/market/insights'),
+};
+
 // AI
 export const aiApi = {
   analyzeResume: (formData) => api.post('/ai/resume', formData, {

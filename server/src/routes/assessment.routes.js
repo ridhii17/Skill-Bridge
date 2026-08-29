@@ -7,6 +7,7 @@ import CandidateProfile from '../models/CandidateProfile.js';
 import Skill from '../models/Skill.js';
 import { authenticateUser } from '../middleware/auth.js';
 import { calculateSkillScores, calculateOverallScore, identifyStrengthsAndWeaknesses } from '../algorithms/competencyScorer.js';
+import { checkAndCreateVerifications } from './verification.routes.js';
 
 const router = Router();
 
@@ -122,6 +123,9 @@ router.post('/assessments/:id/submit', authenticateUser, asyncHandler(async (req
     await profile.save();
   }
 
+  // Check for skill verifications
+  const newVerifications = await checkAndCreateVerifications(req.user._id, attempt._id);
+
   ApiResponse.created(res, {
     attemptId: attempt._id,
     score,
@@ -131,6 +135,12 @@ router.post('/assessments/:id/submit', authenticateUser, asyncHandler(async (req
     strengths,
     weaknesses,
     attemptNumber: attempt.attemptNumber,
+    newVerifications: newVerifications.length > 0 ? newVerifications.map((v) => ({
+      skill: v.skillName,
+      level: v.level,
+      badge: v.badge,
+      verificationId: v.verificationId,
+    })) : [],
   }, 'Assessment submitted successfully');
 }));
 

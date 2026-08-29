@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
   Sparkles, LayoutDashboard, UserCircle, Target, FileCheck,
   BarChart3, Briefcase, BookOpen, Map, LogOut, Menu, X,
-  ChevronRight, Upload, Bot,
+  ChevronRight, Upload, Bot, FlaskConical, FileText, Shield, TrendingUp,
 } from 'lucide-react';
 
 const navItems = [
@@ -17,7 +17,11 @@ const navItems = [
   { path: '/learning', label: 'Learning', icon: BookOpen },
   { path: '/roadmap', label: 'Roadmap', icon: Map },
   { path: '/resume', label: 'Resume Analyzer', icon: Upload },
+  { path: '/resume-builder', label: 'Resume Builder', icon: FileText },
+  { path: '/simulator', label: 'Career Simulator', icon: FlaskConical },
+  { path: '/market-insights', label: 'Market Insights', icon: TrendingUp },
   { path: '/assistant', label: 'AI Assistant', icon: Bot },
+  { path: '/admin', label: 'Admin', icon: Shield },
 ];
 
 export default function AppLayout({ children }) {
