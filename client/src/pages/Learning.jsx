@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { learningApi } from '../api/app.api';
-import { Loader2, BookOpen, ExternalLink, Filter, Star, Clock, AlertTriangle } from 'lucide-react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { learningApi, aiApi } from '../api/app.api';
+import { Loader2, BookOpen, ExternalLink, Filter, Star, Clock, AlertTriangle, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Learning() {
   const [activeTab, setActiveTab] = useState('recommendations');
