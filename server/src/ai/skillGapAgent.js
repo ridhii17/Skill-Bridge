@@ -34,16 +34,26 @@ Missing Skills: ${(matchData.missingSkills || []).map((s) => `${s.skillId} (gap:
     };
   }
 
-  // Fallback
-  const strongPoints = (matchData.matchingSkills || []).map((s) => `Skill match: ${s.skillId}`);
-  const improvementAreas = (matchData.missingSkills || []).map((s) => `Gap in ${s.skillId}: needs ${s.gap}% improvement`);
+  // Fallback — resolve skill IDs to names using jobData and candidateData
+  const skillNameLookup = {};
+  (jobData.requiredSkills || []).forEach((s) => { skillNameLookup[s._id || s.name] = s.name; });
+  (candidateData.skills || []).forEach((s) => { skillNameLookup[s._id || s.name] = s.name; });
+  // Also try matching by the IDs in matchData
+  const strongPoints = (matchData.matchingSkills || []).map((s) => {
+    const name = s.name || skillNameLookup[s.skillId] || s.skillId;
+    return `Strong match: ${name} (${s.score}%)`;
+  });
+  const improvementAreas = (matchData.missingSkills || []).map((s) => {
+    const name = s.name || skillNameLookup[s.skillId] || s.skillId;
+    return `Gap in ${name}: needs ${s.gap}% improvement (required ${s.required}%, current ${s.score}%)`;
+  });
 
   return {
     explanation: `This ${jobData.title} role has a ${matchData.matchScore}% match with your profile. ${matchData.matchScore >= 70 ? 'You are a strong candidate.' : matchData.matchScore >= 40 ? 'You meet some requirements but have gaps to address.' : 'Significant skill development is needed for this role.'}`,
     strongPoints: strongPoints.length > 0 ? strongPoints : ['Interest in the role'],
     improvementAreas: improvementAreas.length > 0 ? improvementAreas : ['Complete your assessment to see specific gaps'],
     actionableAdvice: matchData.missingSkills?.length > 0
-      ? `Focus on improving: ${matchData.missingSkills.slice(0, 3).map((s) => s.skillId).join(', ')}`
+      ? `Focus on improving: ${matchData.missingSkills.slice(0, 3).map((s) => skillNameLookup[s.skillId] || s.skillId).join(', ')}`
       : 'Take an assessment to get detailed skill analysis.',
     isAIGenerated: false,
     source: 'Deterministic Analysis (AI unavailable)',

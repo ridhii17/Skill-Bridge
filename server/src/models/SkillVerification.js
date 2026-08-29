@@ -8,7 +8,7 @@ const skillVerificationSchema = new mongoose.Schema(
     skillName: { type: String, required: true },
     level: { type: Number, required: true },
     assessmentAttempt: { type: mongoose.Schema.Types.ObjectId, ref: 'AssessmentAttempt' },
-    verificationId: { type: String, required: true, unique: true },
+    verificationId: { type: String, unique: true },
     badge: { type: String, enum: ['bronze', 'silver', 'gold'], default: 'bronze' },
     verifiedAt: { type: Date, default: Date.now },
     isActive: { type: Boolean, default: true },

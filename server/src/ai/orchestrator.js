@@ -65,11 +65,23 @@ class AIOrchestrator {
     };
 
     // Get deterministic match
+    const allSkills = await Skill.find();
+    const skillNameMap = {};
+    allSkills.forEach((s) => { skillNameMap[s._id.toString()] = s.name; });
+
     const skillScores = (profile.declaredSkillLevels || []).map((ds) => ({
       skill: ds.skill?._id || ds.skill,
       score: ds.level,
     }));
     const matchData = calculateJobMatch(profile, job, skillScores);
+
+    // Resolve skill IDs to names in matchData
+    if (matchData.matchingSkills) {
+      matchData.matchingSkills = matchData.matchingSkills.map((s) => ({ ...s, name: skillNameMap[s.skillId] || s.skillId }));
+    }
+    if (matchData.missingSkills) {
+      matchData.missingSkills = matchData.missingSkills.map((s) => ({ ...s, name: skillNameMap[s.skillId] || s.skillId }));
+    }
 
     return explainJobMatch(candidateData, jobData, matchData);
   }

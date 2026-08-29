@@ -32,13 +32,14 @@ export async function checkAndCreateVerifications(candidateId, attemptId) {
           newVerifications.push(existing);
         } else {
           const skillDoc = await Skill.findById(ss.skill);
-          const v = await SkillVerification.create({
+          const v = new SkillVerification({
             candidate: candidateId,
             skill: ss.skill,
             skillName: skillDoc?.name || ss.skillName,
             level: ss.score,
             assessmentAttempt: attemptId,
           });
+          await v.save();
           newVerifications.push(v);
         }
       }
