@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
   Sparkles, LayoutDashboard, UserCircle, Target, FileCheck,
   BarChart3, Briefcase, BookOpen, Map, LogOut, Menu, X,
-  ChevronRight,
+  ChevronRight, Upload, Bot,
 } from 'lucide-react';
 
 const navItems = [
@@ -16,6 +16,8 @@ const navItems = [
   { path: '/jobs', label: 'Jobs', icon: Briefcase },
   { path: '/learning', label: 'Learning', icon: BookOpen },
   { path: '/roadmap', label: 'Roadmap', icon: Map },
+  { path: '/resume', label: 'Resume Analyzer', icon: Upload },
+  { path: '/assistant', label: 'AI Assistant', icon: Bot },
 ];
 
 export default function AppLayout({ children }) {
