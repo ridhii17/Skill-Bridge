@@ -9,6 +9,13 @@ import logger from './middleware/logger.js';
 import errorHandler from './middleware/errorHandler.js';
 import healthRoutes from './routes/health.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import skillRoutes from './routes/skill.routes.js';
+import careerRoutes from './routes/career.routes.js';
+import candidateRoutes from './routes/candidate.routes.js';
+import assessmentRoutes from './routes/assessment.routes.js';
+import jobRoutes from './routes/job.routes.js';
+import learningRoutes from './routes/learning.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 
 const app = express();
 
@@ -30,6 +37,13 @@ app.use(logger);
 // ─── Routes ─────────────────────────────────────────────
 app.use('/api', healthRoutes);
 app.use('/api', authRoutes);
+app.use('/api', skillRoutes);
+app.use('/api', careerRoutes);
+app.use('/api', candidateRoutes);
+app.use('/api', assessmentRoutes);
+app.use('/api', jobRoutes);
+app.use('/api', learningRoutes);
+app.use('/api', dashboardRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────
 app.use('/api/*', (req, res) => {
