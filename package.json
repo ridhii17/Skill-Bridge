@@ -12,6 +12,7 @@
     "seed": "cd server && node src/seeders/index.js"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "nodemon": "^3.1.14"
   }
 }
