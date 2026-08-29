@@ -57,6 +57,27 @@ router.get('/jobs/matches/my', authenticateUser, asyncHandler(async (req, res) =
   }));
 
   const ranked = rankJobs(profile, allJobs, skillScores);
+
+  // Resolve skill IDs to names in matching/missing skills
+  const allSkillDocs = await Skill.find();
+  const skillNameMap = {};
+  allSkillDocs.forEach((s) => { skillNameMap[s._id.toString()] = s.name; });
+
+  ranked.forEach((r) => {
+    if (r.match?.matchingSkills) {
+      r.match.matchingSkills = r.match.matchingSkills.map((ms) => ({
+        ...ms,
+        name: skillNameMap[ms.skillId] || ms.skillId,
+      }));
+    }
+    if (r.match?.missingSkills) {
+      r.match.missingSkills = r.match.missingSkills.map((ms) => ({
+        ...ms,
+        name: skillNameMap[ms.skillId] || ms.skillId,
+      }));
+    }
+  });
+
   ApiResponse.success(res, ranked);
 }));
 

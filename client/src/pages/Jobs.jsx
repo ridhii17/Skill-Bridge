@@ -58,10 +58,10 @@ function JobList() {
                 </div>
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {jm.match?.matchingSkills?.slice(0, 4).map((ms, j) => (
-                    <span key={j} className="badge badge-success text-[10px]">✓ {ms.skillId}</span>
+                    <span key={j} className="badge badge-success text-[10px]">✓ {ms.name || ms.skillId}</span>
                   ))}
                   {jm.match?.missingSkills?.slice(0, 3).map((ms, j) => (
-                    <span key={j} className="badge badge-warning text-[10px]">⚠ {ms.skillId}</span>
+                    <span key={j} className="badge badge-warning text-[10px]">⚠ {ms.name || ms.skillId}</span>
                   ))}
                 </div>
               </div>
