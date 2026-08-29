@@ -51,7 +51,7 @@ app.use('/api', learningRoutes);
 app.use('/api', dashboardRoutes);
 app.use('/api', aiRoutes);
 app.use('/api', verificationRoutes);
-app.use('/api', adminRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api', simulatorRoutes);
 app.use('/api', marketRoutes);
 
