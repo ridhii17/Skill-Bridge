@@ -8,6 +8,7 @@ import { generalLimiter } from './middleware/rateLimiter.js';
 import logger from './middleware/logger.js';
 import errorHandler from './middleware/errorHandler.js';
 import healthRoutes from './routes/health.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(logger);
 
 // ─── Routes ─────────────────────────────────────────────
 app.use('/api', healthRoutes);
+app.use('/api', authRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────
 app.use('/api/*', (req, res) => {
