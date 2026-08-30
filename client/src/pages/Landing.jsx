@@ -519,6 +519,72 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ─── Adaptive Loop ──────────────────────────── */}
+      <section id="loop" className="py-20 px-4 sm:px-6 lg:px-8 bg-surface-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-sm font-medium text-brand-600 uppercase tracking-wider mb-2">Adaptive Intelligence</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 mb-4">
+              Your career readiness is not a static score.
+            </h2>
+            <p className="text-lg text-surface-500 max-w-2xl mx-auto">
+              SkillBridge AI continuously evaluates your progress and adapts your learning path as competencies improve.
+            </p>
+          </div>
+
+          {/* Flow visualization */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-12">
+            {[
+              { label: 'Assess', icon: Brain, color: 'bg-brand-100 text-brand-700 border-brand-200' },
+              { label: 'Identify Gaps', icon: Target, color: 'bg-red-50 text-red-700 border-red-200' },
+              { label: 'Learn', icon: BookOpen, color: 'bg-sky-50 text-sky-700 border-sky-200' },
+              { label: 'Verify', icon: Shield, color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+              { label: 'Reassess', icon: BarChart3, color: 'bg-amber-50 text-amber-700 border-amber-200' },
+              { label: 'Improve', icon: TrendingUp, color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+              { label: 'Match', icon: Briefcase, color: 'bg-brand-50 text-brand-700 border-brand-200' },
+            ].map((step, i, arr) => (
+              <div key={i} className="flex items-center gap-2 sm:gap-4">
+                <div className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-medium text-sm ${step.color}`}>
+                  <step.icon className="w-4 h-4" />
+                  {step.label}
+                </div>
+                {i < arr.length - 1 && (
+                  <ChevronRight className="w-4 h-4 text-surface-300 hidden sm:block" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Example scenario */}
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-surface-200 p-6 sm:p-8 shadow-sm">
+            <p className="text-xs font-medium text-surface-400 uppercase tracking-wider mb-4">Product Example — Readiness Loop</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4 rounded-xl bg-surface-50">
+                <p className="text-xs text-surface-500 mb-1">Initial Assessment</p>
+                <p className="text-3xl font-bold text-amber-600">62%</p>
+                <p className="text-xs text-surface-400 mt-1">System Design, DSA gaps</p>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-brand-50">
+                <p className="text-xs text-brand-500 mb-1">After Learning + Practice</p>
+                <p className="text-3xl font-bold text-brand-600">71%</p>
+                <p className="text-xs text-brand-400 mt-1">+9 points improvement</p>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-emerald-50">
+                <p className="text-xs text-emerald-500 mb-1">New Job Matches</p>
+                <p className="text-3xl font-bold text-emerald-600">17</p>
+                <p className="text-xs text-emerald-400 mt-1">from 8 original matches</p>
+              </div>
+            </div>
+            <div className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-100">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-amber-600" />
+                <p className="text-sm font-medium text-amber-700">Next Best Action: Improve System Design (gap: 28 points)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── CTA ───────────────────────────────────── */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
