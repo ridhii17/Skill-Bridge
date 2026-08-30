@@ -25,6 +25,10 @@ const baseNavItems = [
   { path: '/assistant', label: 'AI Assistant', icon: Bot },
 ];
 
+const recruiterNavItems = [
+  { path: '/recruiter', label: 'Recruiter', icon: Briefcase },
+];
+
 const adminNavItems = [
   { path: '/admin', label: 'Admin', icon: Shield },
 ];
@@ -41,7 +45,8 @@ export default function AppLayout({ children }) {
   };
 
   const isAdmin = user?.role === 'admin';
-  const navItems = isAdmin ? [...baseNavItems, ...adminNavItems] : baseNavItems;
+  const isRecruiter = user?.role === 'recruiter';
+  const navItems = isAdmin ? [...baseNavItems, ...adminNavItems] : isRecruiter ? [...baseNavItems, ...recruiterNavItems] : baseNavItems;
 
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 

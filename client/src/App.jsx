@@ -24,6 +24,7 @@ import MarketInsights from './pages/MarketInsights';
 import Verification from './pages/Verification';
 import CareerReadiness from './pages/CareerReadiness';
 import LearningJourney from './pages/LearningJourney';
+import RecruiterDashboard from './pages/RecruiterDashboard';
 
 function App() {
   return (
@@ -107,6 +108,10 @@ function App() {
       <Route
         path="/career-readiness"
         element={<ProtectedRoute><AppLayout><CareerReadiness /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/recruiter"
+        element={<ProtectedRoute><AppLayout><RecruiterDashboard /></AppLayout></ProtectedRoute>}
       />
       <Route
         path="/market-insights"
