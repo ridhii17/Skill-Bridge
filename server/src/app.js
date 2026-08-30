@@ -22,6 +22,7 @@ import adminRoutes from './routes/admin.routes.js';
 import simulatorRoutes from './routes/simulator.routes.js';
 import marketRoutes from './routes/market.routes.js';
 import careerReadinessRoutes from './routes/careerReadiness.routes.js';
+import careerProgressRoutes from './routes/careerProgress.routes.js';
 import adaptiveLearningRoutes from './routes/adaptiveLearning.routes.js';
 import recruiterRoutes from './routes/recruiter.routes.js';
 
@@ -58,6 +59,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api', simulatorRoutes);
 app.use('/api', marketRoutes);
 app.use('/api', careerReadinessRoutes);
+app.use('/api', careerProgressRoutes);
 app.use('/api', adaptiveLearningRoutes);
 app.use('/api', recruiterRoutes);
 
