@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { dashboardApi, adaptiveApi, marketApi } from '../api/app.api';
 import {
   Loader2, Target, BarChart3, Briefcase, BookOpen, Map,
-  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles, Zap, Brain, Globe,
+  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles, Zap, Brain, Globe, GitBranch,
 } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -179,6 +179,26 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Career Progress Card */}
+      <Link to="/career-progress" className="block">
+        <div className="card p-5 border-2 border-sky-200 bg-sky-50/50 hover:shadow-lg transition-shadow">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="p-3 rounded-xl bg-sky-100">
+              <GitBranch className="w-6 h-6 text-sky-600" />
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-medium text-sky-600 uppercase tracking-wider mb-1">Career Readiness Loop</p>
+              <p className="text-sm text-surface-600">
+                Your readiness is not a static score — it evolves as you learn, practice, and improve.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-sm font-medium bg-sky-100 text-sky-700 px-4 py-2 rounded-lg">
+              View Career Journey <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        </div>
+      </Link>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
