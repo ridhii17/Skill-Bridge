@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAccessibility } from '../context/AccessibilityContext';
 import { candidateApi } from '../api/app.api';
@@ -84,13 +85,18 @@ export default function AccessibilitySettings() {
     },
   });
 
-  // Sync from profile on load
-  if (data?.data?.profile?.accessibilitySettings && !initialized) {
-    syncFromProfile(data.data.profile.accessibilitySettings);
-  }
+
 
   const profile = data?.data?.profile;
   const learningSupport = profile?.learningSupportPreference || 'visual';
+  const [localLearningSupport, setLocalLearningSupport] = useState(learningSupport);
+  const [profileSynced, setProfileSynced] = useState(false);
+
+  // Sync from profile once
+  if (profile?.accessibilitySettings && !profileSynced) {
+    syncFromProfile(profile.accessibilitySettings);
+    setProfileSynced(true);
+  }
 
   const handleSave = () => {
     mutation.mutate({
@@ -101,16 +107,14 @@ export default function AccessibilitySettings() {
         dyslexiaFont: settings.dyslexiaFont,
         screenReaderOptimized: settings.screenReaderOptimized,
       },
-      learningSupportPreference: learningSupport,
+      learningSupportPreference: localLearningSupport,
     });
   };
 
   const handleLearningSupport = (value) => {
-    // Save immediately
+    setLocalLearningSupport(value);
     mutation.mutate({ learningSupportPreference: value });
   };
-
-  let initialized = false;
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
