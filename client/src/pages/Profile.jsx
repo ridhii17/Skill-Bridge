@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { candidateApi, skillApi } from '../api/app.api';
+import { candidateApi, skillApi, verificationApi } from '../api/app.api';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, Save, Plus, X } from 'lucide-react';
+import { Loader2, Save, Plus, X, Shield } from 'lucide-react';
+import VerifiedCompetencyCard from '../components/VerifiedCompetencyCard';
 
 export default function Profile() {
   const { user, refreshUser } = useAuth();
@@ -282,6 +283,51 @@ export default function Profile() {
           {mutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save className="w-5 h-5" /> Save Profile</>}
         </button>
       </form>
+
+      {/* Verified Skills Section */}
+      <VerifiedSkillsSection />
+    </div>
+  );
+}
+
+function VerifiedSkillsSection() {
+  const { data: verificationsData, isLoading } = useQuery({
+    queryKey: ['myVerifications'],
+    queryFn: verificationApi.myVerifications,
+  });
+
+  const verifications = verificationsData?.data?.verifications || [];
+
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mt-6">
+        <div className="animate-pulse space-y-3">
+          <div className="h-5 bg-gray-200 rounded w-48" />
+          <div className="h-4 bg-gray-100 rounded w-32" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6">
+      <div className="flex items-center gap-2 mb-4">
+        <Shield className="w-5 h-5 text-indigo-600" />
+        <h3 className="text-lg font-semibold text-gray-900">Verified Skills</h3>
+      </div>
+      {verifications.length === 0 ? (
+        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
+          <Shield className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+          <p className="text-gray-500 text-sm">No verified skills yet.</p>
+          <p className="text-gray-400 text-xs mt-1">Complete assessments to earn verified competency badges.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {verifications.map((v) => (
+            <VerifiedCompetencyCard key={v._id} verification={v} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
