@@ -23,11 +23,10 @@ router.get('/candidates/profile', authenticateUser, asyncHandler(async (req, res
   ApiResponse.success(res, { user: req.user, profile });
 }));
 
-router.put('/candidates/profile', authenticateUser, asyncHandler(async (req, res) => {
-  const allowed = [
+router.put('/candidates/profile', authenticateUser, asyncHandler(async (req, res) => {  const allowed = [
     'headline', 'bio', 'education', 'experience', 'projects',
-    'skills', 'declaredSkillLevels', 'careerGoal', 'preferredLocation',
-    'preferredJobType', 'expectedSalary', 'learningPreference', 'availableHoursPerWeek',
+    'skills', 'declaredSkillLevels', 'careerGoal', 'preferredLocation', 'preferredJobType', 'expectedSalary', 'learningPreference', 'availableHoursPerWeek',
+    'accessibilitySettings', 'learningSupportPreference',
   ];
 
   const updates = {};

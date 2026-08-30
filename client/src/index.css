@@ -75,3 +75,94 @@
     @apply animate-pulse bg-surface-200 rounded;
   }
 }
+
+/* ─── Accessibility: Text Size ─────────────────────── */
+.text-normal { font-size: 16px; }
+.text-large { font-size: 18px; }
+.text-xlarge { font-size: 20px; }
+.text-xlarge .text-sm { font-size: 0.9rem; }
+.text-xlarge .text-xs { font-size: 0.8rem; }
+
+/* ─── Accessibility: High Contrast ─────────────────── */
+.high-contrast {
+  --contrast-bg: #000;
+  --contrast-text: #fff;
+  --contrast-border: #666;
+  --contrast-link: #60a5fa;
+}
+.high-contrast .bg-white { background-color: #111 !important; }
+.high-contrast .text-surface-900,
+.high-contrast .text-surface-800,
+.high-contrast .text-surface-700 { color: #fff !important; }
+.high-contrast .text-surface-500,
+.high-contrast .text-surface-400,
+.high-contrast .text-surface-600 { color: #ccc !important; }
+.high-contrast .border-surface-200,
+.high-contrast .border-surface-300 { border-color: #555 !important; }
+.high-contrast .bg-surface-50 { background-color: #1a1a1a !important; }
+.high-contrast .bg-surface-100 { background-color: #222 !important; }
+.high-contrast .card { background-color: #1a1a1a !important; border-color: #444 !important; }
+.high-contrast .card-hover { background-color: #1a1a1a !important; border-color: #444 !important; }
+.high-contrast .input-field { background-color: #222 !important; border-color: #555 !important; color: #fff !important; }
+
+/* ─── Accessibility: Reduced Motion ────────────────── */
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+.reduced-motion .animate-spin { animation: none !important; }
+.reduced-motion .animate-pulse { animation: none !important; }
+
+/* ─── Accessibility: Dyslexia Font ─────────────────── */
+.dyslexia-font, .dyslexia-font * {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Trebuchet MS', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  line-height: 1.8;
+}
+
+/* ─── Accessibility: Screen Reader Optimized ───────── */
+.sr-optimized .sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem 1rem !important;
+  margin: 0.5rem !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: #4f46e5 !important;
+  color: #fff !important;
+  border-radius: 0.5rem !important;
+  z-index: 100 !important;
+}
+
+/* ─── Accessibility: Focus Visible ─────────────────── */
+:focus-visible {
+  outline: 3px solid #4f46e5;
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible,
+[role='button']:focus-visible {
+  outline: 3px solid #4f46e5;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Accessibility: Skip to Main Content ──────────── */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #4f46e5;
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}

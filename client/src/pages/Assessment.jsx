@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { assessmentApi, careerApi } from '../api/app.api';
-import { Loader2, Clock, ChevronRight, ChevronLeft, CheckCircle2, XCircle, Award, BarChart3, ArrowRight } from 'lucide-react';
+import { useAccessibility } from '../context/AccessibilityContext';
+import { Loader2, Clock, ChevronRight, ChevronLeft, CheckCircle2, XCircle, Award, BarChart3, ArrowRight, Accessibility } from 'lucide-react';
 
 // ─── ASSESSMENT LIST ──────────────────────────────────
 function AssessmentList() {
@@ -59,9 +60,42 @@ function AssessmentList() {
 function TakeAssessment() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { reducedMotion, screenReaderOptimized, textSize } = useAccessibility();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [startedAt] = useState(new Date().toISOString());
+  const questionRef = useRef(null);
+  const simplifiedMode = textSize === 'xlarge';
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        setCurrentIndex((i) => Math.min(questions.length - 1, i + 1));
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        setCurrentIndex((i) => Math.max(0, i - 1));
+      } else if (e.key >= '1' && e.key <= '4') {
+        e.preventDefault();
+        const optionIndex = parseInt(e.key) - 1;
+        if (optionIndex < (questions[currentIndex]?.options?.length || 0)) {
+          handleSelect(optionIndex);
+        }
+      } else if (e.key === 'Escape') {
+        navigate('/assessment');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, questions.length]);
+
+  // Focus question on change
+  useEffect(() => {
+    if (questionRef.current) {
+      questionRef.current.focus();
+    }
+  }, [currentIndex]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['assessment', id],
@@ -105,35 +139,47 @@ function TakeAssessment() {
     advanced: 'badge-danger',
   };
 
+  const questionTextClass = simplifiedMode ? 'text-xl' : 'text-lg';
+  const optionPadding = simplifiedMode ? 'p-5' : 'p-4';
+
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto" role="main" aria-label="Assessment">
+      {/* Accessibility mode indicator */}
+      {simplifiedMode && (
+        <div className="mb-4 p-2 rounded-lg bg-brand-50 border border-brand-200 text-brand-700 text-xs flex items-center gap-2">
+          <Accessibility className="w-3.5 h-3.5" /> Simplified Assessment Mode — one question at a time, larger text, keyboard navigation (1-4 to select, ←→ to navigate)
+        </div>
+      )}
+
       <div className="card p-6 mb-6">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-surface-900">{assessment.title}</h2>
-          <span className="text-sm text-surface-500">{answeredCount}/{questions.length} answered</span>
+          <span className="text-sm text-surface-500" aria-live="polite">{answeredCount}/{questions.length} answered</span>
         </div>
-        <div className="w-full h-2 bg-surface-100 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-surface-100 rounded-full overflow-hidden" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
           <div className="h-full bg-brand-600 rounded-full transition-all" style={{ width: `${progress}%` }} />
         </div>
         <div className="flex items-center justify-between mt-2 text-sm text-surface-500">
-          <span>Question {currentIndex + 1} of {questions.length}</span>
+          <span aria-live="polite">Question {currentIndex + 1} of {questions.length}</span>
           <span className={`badge ${difficultyColor[question.difficulty]}`}>{question.difficulty}</span>
         </div>
       </div>
 
-      <div className="card p-6 mb-6">
-        {question.skill && (
+      <div className="card p-6 mb-6" ref={questionRef} tabIndex={-1} aria-label={`Question ${currentIndex + 1}`}>        {question.skill && (
           <div className="mb-3">
             <span className="badge bg-brand-50 text-brand-700">{question.skill?.name || 'Skill'}</span>
           </div>
         )}
-        <p className="text-lg text-surface-900 font-medium mb-6">{question.questionText}</p>
-        <div className="space-y-3">
+        <p className={`${questionTextClass} text-surface-900 font-medium mb-6`}>{question.questionText}</p>
+        <div className="space-y-3" role="radiogroup" aria-label="Answer options">
           {question.options.map((opt, i) => (
             <button
               key={i}
               onClick={() => handleSelect(i)}
-              className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+              role="radio"
+              aria-checked={answers[question._id] === i}
+              aria-label={`Option ${String.fromCharCode(65 + i)}: ${opt}`}
+              className={`w-full text-left ${optionPadding} rounded-xl border-2 transition-all ${
                 answers[question._id] === i
                   ? 'border-brand-500 bg-brand-50 text-brand-900'
                   : 'border-surface-200 hover:border-surface-300 text-surface-700'
