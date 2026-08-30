@@ -73,6 +73,13 @@ export const simulatorApi = {
   whatIf: (improvements) => api.post('/simulator/what-if', { skillImprovements: improvements }),
 };
 
+// Career Readiness
+export const careerReadinessApi = {
+  get: () => api.get('/career-readiness'),
+  history: (params) => api.get('/career-readiness/history', { params }),
+  createSnapshot: (triggeredBy) => api.post('/career-readiness/snapshot', { triggeredBy }),
+};
+
 // Market
 export const marketApi = {
   insights: () => api.get('/market/insights'),

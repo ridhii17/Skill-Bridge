@@ -21,6 +21,7 @@ import verificationRoutes from './routes/verification.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import simulatorRoutes from './routes/simulator.routes.js';
 import marketRoutes from './routes/market.routes.js';
+import careerReadinessRoutes from './routes/careerReadiness.routes.js';
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use('/api', verificationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', simulatorRoutes);
 app.use('/api', marketRoutes);
+app.use('/api', careerReadinessRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────
 app.use('/api/*', (req, res) => {

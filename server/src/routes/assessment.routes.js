@@ -8,6 +8,7 @@ import Skill from '../models/Skill.js';
 import { authenticateUser } from '../middleware/auth.js';
 import { calculateSkillScores, calculateOverallScore, identifyStrengthsAndWeaknesses } from '../algorithms/competencyScorer.js';
 import { checkAndCreateVerifications } from './verification.routes.js';
+import { createReadinessSnapshot } from './careerReadiness.routes.js';
 
 const router = Router();
 
@@ -125,6 +126,9 @@ router.post('/assessments/:id/submit', authenticateUser, asyncHandler(async (req
 
   // Check for skill verifications
   const newVerifications = await checkAndCreateVerifications(req.user._id, attempt._id);
+
+  // Create readiness snapshot
+  await createReadinessSnapshot(req.user._id, 'assessment', attempt._id);
 
   ApiResponse.created(res, {
     attemptId: attempt._id,
