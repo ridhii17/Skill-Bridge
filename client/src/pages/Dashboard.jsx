@@ -28,6 +28,11 @@ export default function Dashboard() {
     queryFn: dashboardApi.get,
   });
 
+  const { data: nextActionData } = useQuery({
+    queryKey: ['nextAction'],
+    queryFn: adaptiveApi.nextAction,
+  });
+
   if (isLoading) return (
     <div className="flex items-center justify-center min-h-[50vh]">
       <Loader2 className="w-8 h-8 text-brand-600 animate-spin" />
@@ -39,12 +44,6 @@ export default function Dashboard() {
       <p className="text-red-600">Failed to load dashboard. Please try again.</p>
     </div>
   );
-
-  const { data: nextActionData } = useQuery({
-    queryKey: ['nextAction'],
-    queryFn: adaptiveApi.nextAction,
-    enabled: !!data?.data,
-  });
 
   const d = data?.data;
   if (!d) return null;
