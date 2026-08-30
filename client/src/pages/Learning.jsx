@@ -71,6 +71,7 @@ function RecommendationCard({ rec }) {
 export default function Learning() {
   const [activeTab, setActiveTab] = useState('recommendations');
   const [levelFilter, setLevelFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
 
   const { data: recsData, isLoading: recsLoading } = useQuery({
     queryKey: ['learningRecommendations'],
@@ -78,8 +79,8 @@ export default function Learning() {
   });
 
   const { data: resourcesData, isLoading: resourcesLoading } = useQuery({
-    queryKey: ['learningResources', levelFilter],
-    queryFn: () => learningApi.resources(levelFilter ? { level: levelFilter } : {}),
+    queryKey: ['learningResources', levelFilter, typeFilter],
+    queryFn: () => learningApi.resources({ ...(levelFilter ? { level: levelFilter } : {}), ...(typeFilter ? { type: typeFilter } : {}) }),
   });
 
   const recommendations = recsData?.data || [];
@@ -124,13 +125,22 @@ export default function Learning() {
 
       {activeTab === 'all' && (
         <div>
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex flex-wrap items-center gap-2 mb-4">
             <Filter className="w-4 h-4 text-surface-400" />
-            <select value={levelFilter} onChange={(e) => setLevelFilter(e.target.value)} className="input-field w-auto py-2 text-sm">
+            <select value={levelFilter} onChange={(e) => setLevelFilter(e.target.value)} className="input-field w-auto py-2 text-sm" aria-label="Filter by level">
               <option value="">All Levels</option>
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
+            </select>
+            <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="input-field w-auto py-2 text-sm" aria-label="Filter by content type">
+              <option value="">All Types</option>
+              <option value="video">Video</option>
+              <option value="article">Reading</option>
+              <option value="course">Interactive</option>
+              <option value="practice">Hands-on</option>
+              <option value="book">Books</option>
+              <option value="project">Projects</option>
             </select>
           </div>
           {resourcesLoading ? (

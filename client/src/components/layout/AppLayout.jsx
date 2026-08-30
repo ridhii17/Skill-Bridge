@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
   Sparkles, LayoutDashboard, UserCircle, Target, FileCheck,
   BarChart3, Briefcase, BookOpen, Map, LogOut, Menu, X,
-  ChevronRight, Upload, Bot, FlaskConical, FileText, Shield, TrendingUp, Gauge, Brain,
+  ChevronRight, Upload, Bot, FlaskConical, FileText, Shield, TrendingUp, Gauge, Brain, Accessibility,
 } from 'lucide-react';
 
 const baseNavItems = [
@@ -22,6 +22,7 @@ const baseNavItems = [
   { path: '/resume-builder', label: 'Resume Builder', icon: FileText },
   { path: '/simulator', label: 'Career Simulator', icon: FlaskConical },
   { path: '/market-insights', label: 'Market Insights', icon: TrendingUp },
+  { path: '/accessibility', label: 'Accessibility', icon: Accessibility },
   { path: '/assistant', label: 'AI Assistant', icon: Bot },
 ];
 

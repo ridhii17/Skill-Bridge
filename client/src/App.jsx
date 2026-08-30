@@ -25,6 +25,7 @@ import Verification from './pages/Verification';
 import CareerReadiness from './pages/CareerReadiness';
 import LearningJourney from './pages/LearningJourney';
 import RecruiterDashboard from './pages/RecruiterDashboard';
+import AccessibilitySettings from './pages/AccessibilitySettings';
 
 function App() {
   return (
@@ -112,6 +113,10 @@ function App() {
       <Route
         path="/recruiter"
         element={<ProtectedRoute><AppLayout><RecruiterDashboard /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/accessibility"
+        element={<ProtectedRoute><AppLayout><AccessibilitySettings /></AppLayout></ProtectedRoute>}
       />
       <Route
         path="/market-insights"
