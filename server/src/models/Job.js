@@ -18,6 +18,7 @@ const jobSchema = new mongoose.Schema(
     experienceRequired: { type: Number, default: 0 },
     educationRequired: { type: String, default: '' },
     careerRole: { type: mongoose.Schema.Types.ObjectId, ref: 'CareerRole' },
+    postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     isDemo: { type: Boolean, default: true },
     isActive: { type: Boolean, default: true },
     postedAt: { type: Date, default: Date.now },
@@ -27,5 +28,6 @@ const jobSchema = new mongoose.Schema(
 
 jobSchema.index({ careerRole: 1 });
 jobSchema.index({ isActive: 1 });
+jobSchema.index({ postedBy: 1 });
 
 export default mongoose.model('Job', jobSchema);

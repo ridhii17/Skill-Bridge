@@ -96,6 +96,23 @@ export const marketApi = {
   candidateInsights: () => api.get('/market/candidate-insights'),
 };
 
+// Recruiter
+export const recruiterApi = {
+  stats: () => api.get('/recruiter/stats'),
+  createJob: (data) => api.post('/recruiter/jobs', data),
+  myJobs: () => api.get('/recruiter/jobs'),
+  getJob: (id) => api.get(`/recruiter/jobs/${id}`),
+  updateJob: (id, data) => api.put(`/recruiter/jobs/${id}`, data),
+  deleteJob: (id) => api.delete(`/recruiter/jobs/${id}`),
+  jobMatches: (jobId) => api.get(`/recruiter/jobs/${jobId}/matches`),
+  candidates: (params) => api.get('/recruiter/candidates', { params }),
+  candidateDetail: (id) => api.get(`/recruiter/candidates/${id}`),
+  shortlist: (data) => api.post('/recruiter/shortlist', data),
+  shortlists: (params) => api.get('/recruiter/shortlists', { params }),
+  updateShortlist: (id, data) => api.put(`/recruiter/shortlists/${id}`, data),
+  removeShortlist: (id) => api.delete(`/recruiter/shortlists/${id}`),
+};
+
 // AI
 export const aiApi = {
   analyzeResume: (formData) => api.post('/ai/resume', formData, {

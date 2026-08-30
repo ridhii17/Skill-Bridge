@@ -23,6 +23,7 @@ import simulatorRoutes from './routes/simulator.routes.js';
 import marketRoutes from './routes/market.routes.js';
 import careerReadinessRoutes from './routes/careerReadiness.routes.js';
 import adaptiveLearningRoutes from './routes/adaptiveLearning.routes.js';
+import recruiterRoutes from './routes/recruiter.routes.js';
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use('/api', simulatorRoutes);
 app.use('/api', marketRoutes);
 app.use('/api', careerReadinessRoutes);
 app.use('/api', adaptiveLearningRoutes);
+app.use('/api', recruiterRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────
 app.use('/api/*', (req, res) => {
