@@ -23,6 +23,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import MarketInsights from './pages/MarketInsights';
 import Verification from './pages/Verification';
 import CareerReadiness from './pages/CareerReadiness';
+import CareerProgress from './pages/CareerProgress';
 import LearningJourney from './pages/LearningJourney';
 import RecruiterDashboard from './pages/RecruiterDashboard';
 import AccessibilitySettings from './pages/AccessibilitySettings';
@@ -109,6 +110,10 @@ function App() {
       <Route
         path="/career-readiness"
         element={<ProtectedRoute><AppLayout><CareerReadiness /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/career-progress"
+        element={<ProtectedRoute><AppLayout><CareerProgress /></AppLayout></ProtectedRoute>}
       />
       <Route
         path="/recruiter"

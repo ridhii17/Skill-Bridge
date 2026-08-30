@@ -10,6 +10,7 @@ import {
 const baseNavItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/career-readiness', label: 'Career Readiness', icon: Gauge },
+  { path: '/career-progress', label: 'Career Progress', icon: TrendingUp },
   { path: '/profile', label: 'Profile', icon: UserCircle },
   { path: '/career-explorer', label: 'Career Explorer', icon: Target },
   { path: '/assessment', label: 'Assessments', icon: FileCheck },
