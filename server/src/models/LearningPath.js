@@ -9,8 +9,13 @@ const learningPathItemSchema = new mongoose.Schema(
     weekNumber: { type: Number, required: true },
     learningGoal: { type: String, default: '' },
     estimatedHours: { type: Number, default: 5 },
-    status: { type: String, enum: ['not_started', 'in_progress', 'completed'], default: 'not_started' },
+    status: { type: String, enum: ['not_started', 'in_progress', 'completed', 'needs_reinforcement', 'mastered'], default: 'not_started' },
     priority: { type: Number, default: 0 },
+    initialSkillScore: { type: Number, default: 0 },
+    currentSkillScore: { type: Number, default: 0 },
+    targetScore: { type: Number, default: 75 },
+    miniAssessmentScore: { type: Number, default: null },
+    reinforcedCount: { type: Number, default: 0 },
   },
   { _id: true }
 );
