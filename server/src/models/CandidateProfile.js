@@ -32,6 +32,14 @@ const candidateProfileSchema = new mongoose.Schema(
     learningPreference: { type: String, enum: ['video', 'reading', 'hands_on', 'mixed'], default: 'mixed' },
     availableHoursPerWeek: { type: Number, default: 10 },
     overallScore: { type: Number, default: 0 },
+    accessibilitySettings: {
+      textSize: { type: String, enum: ['normal', 'large', 'xlarge'], default: 'normal' },
+      highContrast: { type: Boolean, default: false },
+      reducedMotion: { type: Boolean, default: false },
+      dyslexiaFont: { type: Boolean, default: false },
+      screenReaderOptimized: { type: Boolean, default: false },
+    },
+    learningSupportPreference: { type: String, enum: ['visual', 'audio', 'text', 'hands_on', 'simplified'], default: 'visual' },
   },
   { timestamps: true }
 );
