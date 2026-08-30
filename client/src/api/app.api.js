@@ -52,6 +52,11 @@ export const dashboardApi = {
   get: () => api.get('/dashboard'),
 };
 
+// Career Progress
+export const careerProgressApi = {
+  get: () => api.get('/career-progress'),
+};
+
 // Verification
 export const verificationApi = {
   myVerifications: () => api.get('/verifications/my'),
