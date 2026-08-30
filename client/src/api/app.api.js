@@ -93,6 +93,7 @@ export const careerReadinessApi = {
 // Market
 export const marketApi = {
   insights: () => api.get('/market/insights'),
+  candidateInsights: () => api.get('/market/candidate-insights'),
 };
 
 // AI
