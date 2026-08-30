@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { dashboardApi, adaptiveApi } from '../api/app.api';
+import { dashboardApi, adaptiveApi, marketApi } from '../api/app.api';
 import {
   Loader2, Target, BarChart3, Briefcase, BookOpen, Map,
-  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles, Zap, Brain,
+  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles, Zap, Brain, Globe,
 } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -31,6 +31,11 @@ export default function Dashboard() {
   const { data: nextActionData } = useQuery({
     queryKey: ['nextAction'],
     queryFn: adaptiveApi.nextAction,
+  });
+
+  const { data: marketData } = useQuery({
+    queryKey: ['candidateMarketInsights'],
+    queryFn: marketApi.candidateInsights,
   });
 
   if (isLoading) return (
@@ -134,6 +139,43 @@ export default function Dashboard() {
                 </Link>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Market Insight Card */}
+      {marketData?.data && (
+        <div className="card p-5 border-2 border-emerald-200 bg-emerald-50/50">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="p-3 rounded-xl bg-emerald-100">
+              <Globe className="w-6 h-6 text-emerald-600" />
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-medium text-emerald-600 uppercase tracking-wider mb-1">Market Insight</p>
+              <div className="flex items-center gap-4">
+                <div>
+                  <p className="text-xs text-surface-500">Top Market Skill</p>
+                  <p className="font-bold text-surface-900">{marketData.data.topSkills?.[0]?.name || 'N/A'}</p>
+                </div>
+                <div className="h-8 w-px bg-surface-200" />
+                <div>
+                  <p className="text-xs text-surface-500">Your Status</p>
+                  <p className={`font-bold ${marketData.data.personalizedPosition?.strongMarketSkills?.length > 2 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                    {marketData.data.personalizedPosition?.strongMarketSkills?.length > 2 ? 'Strong' : 'Building'}
+                  </p>
+                </div>
+                <div className="h-8 w-px bg-surface-200" />
+                <div>
+                  <p className="text-xs text-surface-500">Highest Gap</p>
+                  <p className="font-bold text-red-600">
+                    {marketData.data.personalizedPosition?.weakMarketSkills?.[0] || 'None'}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Link to="/market-insights" className="btn-primary text-sm whitespace-nowrap inline-flex items-center gap-1">
+              Explore Market <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       )}
