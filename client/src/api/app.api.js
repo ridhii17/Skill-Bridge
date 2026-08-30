@@ -73,6 +73,16 @@ export const simulatorApi = {
   whatIf: (improvements) => api.post('/simulator/what-if', { skillImprovements: improvements }),
 };
 
+// Adaptive Learning
+export const adaptiveApi = {
+  nextAction: () => api.get('/adaptive/next-action'),
+  skillProgress: () => api.get('/adaptive/skill-progress'),
+  miniAssessment: (skillId) => api.get(`/adaptive/mini-assessment/${skillId}`),
+  submitMiniAssessment: (skillId, data) => api.post(`/adaptive/mini-assessment/${skillId}/submit`, data),
+  dashboard: () => api.get('/adaptive/dashboard'),
+  miniAssessmentHistory: (skillId) => api.get(`/adaptive/mini-assessment-history/${skillId}`),
+};
+
 // Career Readiness
 export const careerReadinessApi = {
   get: () => api.get('/career-readiness'),
