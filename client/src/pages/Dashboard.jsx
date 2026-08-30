@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { dashboardApi } from '../api/app.api';
 import {
   Loader2, Target, BarChart3, Briefcase, BookOpen, Map,
-  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle,
+  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles,
 } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -61,10 +61,42 @@ export default function Dashboard() {
         </p>
       </div>
 
+      {/* Career Readiness Intelligence Card */}
+      {d.gapAnalysis && (
+        <Link to="/career-readiness" className="block">
+          <div className="card p-5 bg-gradient-to-r from-brand-600 to-indigo-600 text-white hover:shadow-lg transition-shadow">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-white/20">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-brand-100 uppercase tracking-wider">Career Readiness Intelligence</p>
+                  <p className="text-2xl font-bold">{d.gapAnalysis.matchPercentage}%</p>
+                </div>
+              </div>
+              <div className="flex-1 hidden sm:block">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-sm text-brand-100">Target:</span>
+                  <span className="text-sm font-semibold">{d.careerGoal?.title || 'Not set'}</span>
+                </div>
+                <p className="text-xs text-brand-200">
+                  {d.gapAnalysis.skillsReady}/{d.gapAnalysis.totalRequired} skills ready · 
+                  {d.readinessLabel || 'Analysis pending'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-sm font-medium bg-white/20 px-4 py-2 rounded-lg">
+                View Full Analysis <ArrowRight className="w-4 h-4" />
+              </div>
+            </div>
+          </div>
+        </Link>
+      )}
+
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard icon={Target} label="Career Goal" value={d.careerGoal?.title || 'Not set'} color="bg-brand-600" link="/career-explorer" />
-        <StatCard icon={BarChart3} label="Overall Score" value={`${d.overallScore}%`} color="bg-emerald-600" link="/skills" />
+        <StatCard icon={BarChart3} label="Overall Score" value={`${d.overallScore}%`} color="bg-emerald-600" link="/career-readiness" />
         <StatCard icon={Briefcase} label="Job Matches" value={d.jobMatches?.length || 0} color="bg-amber-600" link="/jobs" />
         <StatCard icon={BookOpen} label="Learning Progress" value={`${d.learningPath?.progress || 0}%`} color="bg-sky-600" link="/roadmap" />
       </div>

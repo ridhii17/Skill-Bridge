@@ -22,6 +22,7 @@ import ResumeBuilder from './pages/ResumeBuilder';
 import AdminDashboard from './pages/AdminDashboard';
 import MarketInsights from './pages/MarketInsights';
 import Verification from './pages/Verification';
+import CareerReadiness from './pages/CareerReadiness';
 
 function App() {
   return (
@@ -97,6 +98,10 @@ function App() {
       <Route
         path="/admin"
         element={<ProtectedRoute><AppLayout><AdminDashboard /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/career-readiness"
+        element={<ProtectedRoute><AppLayout><CareerReadiness /></AppLayout></ProtectedRoute>}
       />
       <Route
         path="/market-insights"

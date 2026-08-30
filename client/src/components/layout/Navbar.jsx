@@ -16,6 +16,7 @@ const publicLinks = [
 
 const candidateLinks = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
+  { label: 'Readiness', to: '/career-readiness', icon: Target },
   { label: 'Careers', to: '/career-explorer', icon: Target },
   { label: 'Assess', to: '/assessment', icon: FileCheck },
   { label: 'Skills', to: '/skills', icon: BarChart3 },
