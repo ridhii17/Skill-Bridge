@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { dashboardApi } from '../api/app.api';
+import { dashboardApi, adaptiveApi } from '../api/app.api';
 import {
   Loader2, Target, BarChart3, Briefcase, BookOpen, Map,
-  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles,
+  TrendingUp, ArrowRight, CheckCircle2, AlertTriangle, Sparkles, Zap, Brain,
 } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -40,8 +40,16 @@ export default function Dashboard() {
     </div>
   );
 
+  const { data: nextActionData } = useQuery({
+    queryKey: ['nextAction'],
+    queryFn: adaptiveApi.nextAction,
+    enabled: !!data?.data,
+  });
+
   const d = data?.data;
   if (!d) return null;
+
+  const nextAction = nextActionData?.data;
 
   const radarData = (d.skillOverview || []).slice(0, 8).map((s) => ({
     skill: s.skill.length > 10 ? s.skill.slice(0, 10) + '…' : s.skill,
@@ -91,6 +99,44 @@ export default function Dashboard() {
             </div>
           </div>
         </Link>
+      )}
+
+      {/* Next Best Action */}
+      {nextAction && nextAction.title && (
+        <div className="card p-5 border-2 border-amber-200 bg-amber-50/50">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="p-3 rounded-xl bg-amber-100">
+              <Zap className="w-6 h-6 text-amber-600" />
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-medium text-amber-600 uppercase tracking-wider mb-1">Your Next Best Action</p>
+              <h3 className="text-lg font-bold text-surface-900">{nextAction.title}</h3>
+              <p className="text-sm text-surface-600 mt-0.5">{nextAction.reason}</p>
+            </div>
+            <div>
+              {nextAction.type === 'mini_assessment' && nextAction.skill && (
+                <Link to="/learning-journey" className="btn-primary text-sm whitespace-nowrap inline-flex items-center gap-1">
+                  <Brain className="w-4 h-4" /> Check Understanding
+                </Link>
+              )}
+              {nextAction.type === 'learning' && (
+                <Link to="/roadmap" className="btn-primary text-sm whitespace-nowrap inline-flex items-center gap-1">
+                  Continue Learning <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
+              {nextAction.type === 'path_generation' && (
+                <Link to="/roadmap" className="btn-primary text-sm whitespace-nowrap inline-flex items-center gap-1">
+                  Generate Path <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
+              {nextAction.type === 'assessment' && (
+                <Link to="/assessment" className="btn-primary text-sm whitespace-nowrap inline-flex items-center gap-1">
+                  Take Assessment <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Stats */}

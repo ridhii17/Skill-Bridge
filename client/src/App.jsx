@@ -23,6 +23,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import MarketInsights from './pages/MarketInsights';
 import Verification from './pages/Verification';
 import CareerReadiness from './pages/CareerReadiness';
+import LearningJourney from './pages/LearningJourney';
 
 function App() {
   return (
@@ -98,6 +99,10 @@ function App() {
       <Route
         path="/admin"
         element={<ProtectedRoute><AppLayout><AdminDashboard /></AppLayout></ProtectedRoute>}
+      />
+      <Route
+        path="/learning-journey"
+        element={<ProtectedRoute><AppLayout><LearningJourney /></AppLayout></ProtectedRoute>}
       />
       <Route
         path="/career-readiness"

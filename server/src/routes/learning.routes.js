@@ -162,7 +162,7 @@ router.get('/learning/path', authenticateUser, asyncHandler(async (req, res) => 
 // Update learning path item status
 router.put('/learning/path/item/:itemId', authenticateUser, asyncHandler(async (req, res) => {
   const { status } = req.body;
-  if (!['not_started', 'in_progress', 'completed'].includes(status)) {
+  if (!['not_started', 'in_progress', 'completed', 'needs_reinforcement', 'mastered'].includes(status)) {
     return res.status(400).json({ success: false, message: 'Invalid status' });
   }
 

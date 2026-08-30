@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
   Sparkles, LayoutDashboard, UserCircle, Target, FileCheck,
   BarChart3, Briefcase, BookOpen, Map, LogOut, Menu, X,
-  ChevronRight, Upload, Bot, FlaskConical, FileText, Shield, TrendingUp, Gauge,
+  ChevronRight, Upload, Bot, FlaskConical, FileText, Shield, TrendingUp, Gauge, Brain,
 } from 'lucide-react';
 
 const baseNavItems = [
@@ -15,6 +15,7 @@ const baseNavItems = [
   { path: '/assessment', label: 'Assessments', icon: FileCheck },
   { path: '/skills', label: 'Skill Analysis', icon: BarChart3 },
   { path: '/jobs', label: 'Jobs', icon: Briefcase },
+  { path: '/learning-journey', label: 'Learning Journey', icon: Brain },
   { path: '/learning', label: 'Learning', icon: BookOpen },
   { path: '/roadmap', label: 'Roadmap', icon: Map },
   { path: '/resume', label: 'Resume Analyzer', icon: Upload },

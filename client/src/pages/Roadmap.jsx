@@ -2,10 +2,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { learningApi, aiApi } from '../api/app.api';
 import { Loader2, Map, CheckCircle2, Circle, Clock, PlayCircle, Sparkles, ArrowRight, Bot } from 'lucide-react';
 
+import { Trophy, RefreshCw } from 'lucide-react';
+
 const STATUS_CONFIG = {
   not_started: { icon: Circle, color: 'text-surface-400', bg: 'bg-surface-100', label: 'Not Started' },
   in_progress: { icon: PlayCircle, color: 'text-brand-600', bg: 'bg-brand-50', label: 'In Progress' },
   completed: { icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50', label: 'Completed' },
+  mastered: { icon: Trophy, color: 'text-emerald-600', bg: 'bg-emerald-50', label: 'Mastered' },
+  needs_reinforcement: { icon: RefreshCw, color: 'text-red-600', bg: 'bg-red-50', label: 'Needs Reinforcement' },
 };
 
 export default function Roadmap() {
@@ -123,7 +127,7 @@ export default function Roadmap() {
 
                 return (
                   <div key={item._id} className={`p-4 rounded-xl border transition-colors ${
-                    item.status === 'completed' ? 'bg-emerald-50/50 border-emerald-200' : 'bg-white border-surface-200 hover:border-surface-300'
+                    item.status === 'completed' || item.status === 'mastered' ? 'bg-emerald-50/50 border-emerald-200' : item.status === 'needs_reinforcement' ? 'bg-red-50/50 border-red-200' : 'bg-white border-surface-200 hover:border-surface-300'
                   }`}>
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1">
@@ -137,14 +141,27 @@ export default function Roadmap() {
                           <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {item.estimatedHours}h</span>
                           <span className={`badge ${config.bg} ${config.color}`}>{config.label}</span>
                         </div>
+                        {item.currentSkillScore > 0 && (
+                          <div className="mt-2 ml-7">
+                            <div className="flex items-center gap-2 text-xs text-surface-500 mb-1">
+                              <span>Initial: {item.initialSkillScore || 0}%</span>
+                              <span>→</span>
+                              <span>Current: <strong>{item.currentSkillScore}%</strong></span>
+                              <span>Target: {item.targetScore || 75}%</span>
+                            </div>
+                            <div className="h-1.5 bg-surface-100 rounded-full overflow-hidden w-48">
+                              <div className="h-full bg-brand-500 rounded-full" style={{ width: `${Math.min(100, (item.currentSkillScore / (item.targetScore || 75)) * 100)}%` }} />
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      {item.status !== 'completed' && (
+                      {item.status !== 'completed' && item.status !== 'mastered' && (
                         <button
                           onClick={() => updateMutation.mutate({ itemId: item._id, status: nextStatus })}
                           disabled={updateMutation.isPending}
                           className="btn-secondary text-xs py-1.5 px-3"
                         >
-                          {item.status === 'not_started' ? 'Start' : 'Complete'}
+                          {item.status === 'not_started' ? 'Start' : item.status === 'needs_reinforcement' ? 'Retry' : 'Complete'}
                         </button>
                       )}
                     </div>
